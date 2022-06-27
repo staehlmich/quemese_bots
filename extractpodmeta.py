@@ -4,6 +4,8 @@
 
 import requests
 import pandas as pd
+from pydub import AudioSegment
+
 
 class PodMetaData:
     """
@@ -89,7 +91,9 @@ def main():
     df = quemese.get_all_pods()
 
     # saving as tsv file
-    df.to_csv('episodios.csv', sep=",", encoding="utf8")
+    # df.to_csv('episodios.csv', sep=",", encoding="utf8")
+    maverick = AudioSegment.from_file("510-top-gun-maverick.mp3")
+    mav_outro = maverick[:30000]
 
 if __name__ == "__main__":
     main()
