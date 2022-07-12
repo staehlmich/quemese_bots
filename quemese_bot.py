@@ -8,6 +8,8 @@ Program to implement a response bot for Twitter.
 
 from twitterbot import TwitterBot
 import config
+import pandas as pd
+import re
 
 class QuemeseBot(TwitterBot):
     def bot_init(self):
@@ -37,7 +39,7 @@ class QuemeseBot(TwitterBot):
         self.config['tweet_interval_range'] = None
 
         # only reply to tweets that specifically mention the bot
-        self.config['reply_direct_mention_only'] = False
+        self.config['reply_direct_mention_only'] = True
 
         # only include bot followers (and original tweeter) in @-replies
         self.config['reply_followers_only'] = False
@@ -99,7 +101,17 @@ class QuemeseBot(TwitterBot):
         """
         # text = function_that_returns_a_string_goes_here()
         # prefixed_text = prefix + ' ' + text
-        # self.post_tweet(prefix + ' ' + text, reply_to=tweet)
+
+        #TODO: Implement class with different methods/commands on reply.
+        pod_num = re.search(r"\d+", tweet['text'].split()[1])[0]
+        df = pd.read_csv('episodios.csv')
+        title = df.loc[df['episode_number'] == pod_num, 'title'].iloc[0]
+        url = df.loc[df['episode_number'] == pod_num, 'urls'].iloc[0]
+
+        reply = f"{title}: {url}"
+
+        self.post_tweet(prefix + ' ' + reply, reply_to=tweet)
+        self.favorite_tweet(tweet)
 
         # call this to fav the tweet!
         # if something:
@@ -107,7 +119,6 @@ class QuemeseBot(TwitterBot):
 
         # raise NotImplementedError(
         #     "You need to implement this to reply to/fav mentions (or pass if you don't want to)!")
-        pass
     def on_timeline(self, tweet, prefix):
         """
         Defines actions to take on a timeline tweet.

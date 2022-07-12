@@ -123,8 +123,8 @@ class TwitterBot:
             self.log(message, e)
 
     def _tweet_url(self, tweet):
-        return "http://twitter.com/" + tweet.author.screen_name + "/status/" + str(
-            tweet.id)
+        return "http://twitter.com/" + tweet["user"]["screen_name"] + "/status/" + str(
+            tweet["id"])
 
     def _save_state(self):
         with self.config['storage'].write(self.screen_name) as f:
@@ -185,7 +185,7 @@ class TwitterBot:
             if reply_to:
                 self.log("-- Responding to status {}".format(
                     self._tweet_url(reply_to)))
-                kwargs['in_reply_to_status_id'] = reply_to.id
+                kwargs['in_reply_to_status_id'] = reply_to["id"]
             else:
                 self.log("-- Posting to own timeline")
 
@@ -201,7 +201,7 @@ class TwitterBot:
     def favorite_tweet(self, tweet):
         try:
             logging.info('Faving ' + self._tweet_url(tweet))
-            self.api.create_favorite(tweet.id)
+            self.api.create_favorite(tweet["id"])
 
         except tweepy.errors.TweepyException as e:
             self._log_tweepy_error('Can\'t fav status', e)
@@ -268,13 +268,13 @@ class TwitterBot:
                 since_id=self.state['last_mention_id'], count=100)
 
             # direct mentions only?
-            if self.config['reply_direct_mention_only']:
-                current_mentions = [t for t in current_mentions if
-                                    re.split('[^@\w]', t.text)[
+            if self.config['reply_direct_mention_only'] == True:
+                current_mentions = [t._json for t in current_mentions if
+                                    re.split('[^@\w]', t._json["text"])[
                                         0] == '@' + self.screen_name]
 
             if len(current_mentions) != 0:
-                self.state['last_mention_id'] = current_mentions[0].id
+                self.state['last_mention_id'] = current_mentions[0]["id"]
 
             self.state['last_mention_time'] = time.time()
 
