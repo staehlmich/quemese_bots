@@ -67,7 +67,7 @@ class PodMetaData:
         :return: Formatted dataframe
         """
         #Split title at episode number
-        self.all_pods[["episode_number", "title"]] = self.all_pods["title"].str.split(r"\.", 1,expand=True)
+        self.all_pods[["episode_number", "title"]] = self.all_pods["title"].str.split(r"\. ", 1,expand=True)
         #Set duration by minutes.
         self.all_pods["duration"] = self.all_pods["duration"].div(60).astype(int)
         # Keep relevant columns and rearrange

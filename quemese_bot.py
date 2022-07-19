@@ -3,13 +3,36 @@
 #Author: Michael Staehli
 
 """
-Program to implement a response bot for Twitter.
+Program to implement a movie-bot for Twitter.
 """
 
 from twitterbot import TwitterBot
 import config
 import pandas as pd
 import re
+from utils import BotActions
+
+#1. Recommend a random episode from podcast (on command).
+
+#2. Recommend a movie related to robots/bots (automatically/on command).
+    #TODO: need IMdB API for this step
+    #Initially post 1 recommendation per day. Peek ARG time.
+
+#3. Recommend a movie given a genre (on command).
+
+#4. Recommend a similar movie, given a title (on command).
+
+#5. Post a robot movie trivia (automatically/on command).
+
+#6. Retrieve podcast by number or movie name (on command).
+
+#7. Movie quotes: English or Spanish? (on command).
+
+#8. Post quotes from podcasts (automatically).
+
+#9. Train text generation on quemese account.
+
+#10. Automatically post a tweet, when a new podcast is uploaded.
 
 class QuemeseBot(TwitterBot):
     def bot_init(self):
@@ -102,13 +125,16 @@ class QuemeseBot(TwitterBot):
         # text = function_that_returns_a_string_goes_here()
         # prefixed_text = prefix + ' ' + text
 
-        #TODO: Implement class with different methods/commands on reply.
-        pod_num = re.search(r"\d+", tweet['text'].split()[1])[0]
-        df = pd.read_csv('episodios.csv')
-        title = df.loc[df['episode_number'] == pod_num, 'title'].iloc[0]
-        url = df.loc[df['episode_number'] == pod_num, 'urls'].iloc[0]
-
-        reply = f"{title}: {url}"
+        # pod_num = re.search(r"\d+", tweet['text'].split()[1])[0]
+        # df = pd.read_csv('episodios.csv')
+        # title = df.loc[df['episode_number'] == pod_num, 'title'].iloc[0]
+        # url = df.loc[df['episode_number'] == pod_num, 'urls'].iloc[0]
+        #
+        # reply = f"{title}: {url}"
+        command = tweet["text"].lstrip("@FilmQuotes12 ")
+        print(command)
+        bot = BotActions(command=command)
+        reply = bot.get_reply()
 
         self.post_tweet(prefix + ' ' + reply, reply_to=tweet)
         self.favorite_tweet(tweet)
@@ -143,25 +169,6 @@ class QuemeseBot(TwitterBot):
         # raise NotImplementedError(
         #     "You need to implement this to reply to/fav timeline tweets (or pass if you don't want to)!")
         pass
-#1. Recommend a random episode from podcast (on command).
-
-#2. Recommend a movie related to robots/bots (automatically).
-    #TODO: need IMdB API for this step
-    #Initially post 1 recommendation per day. Peek ARG time.
-
-#3. Recommend a movie given a genre (on command).
-
-#4. Recommend a similar movie, given a title (on command).
-
-#5. Post a robot movie trivia (automatically/on command).
-
-#6. Retrieve podcast by number or movie name (on command).
-
-#7. Movie quotes: English or Spanish? (on command).
-
-#8. Post quotes from podcasts (automatically).
-
-#9. Train text generation on quemese account.
 
 
 def main():
