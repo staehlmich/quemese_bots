@@ -48,10 +48,12 @@ class BotActions(object):
         Method to print bot commands.
         :return:
         """
-        message = f"""
-        Commands:\n!help: Display this message.\n
-        !search: Search episode by number or title.\n
-        !pod: Recommend a podcast episode.\n
+        message = \
+        """
+        Commands:
+        !help: Display this message.
+        !search: Search episode by number or title.
+        !pod: Recommend a podcast episode.
         !movie: Recommend a movie.   
         """
         return message
@@ -101,10 +103,11 @@ class BotActions(object):
         rand_page = random.randrange(1, 21)
         # print(rand_page)
         results = discover.movie(with_keywords=[14544], page=rand_page)
+
         # print(results)
         result = random.choice(results["results"])
-
-        return f"{result['original_title']}"
+        url = "https://www.themoviedb.org/movie/"
+        return f"{result['original_title']}: {url+str(result['id'])}"
 
     def get_reply(self):
         """
@@ -124,9 +127,10 @@ class BotActions(object):
             pass
 
 def main():
-    pass
-    # bot = BotActions(command="!movie")
-    # reply = bot.get_reply()
+    # pass
+    bot = BotActions(command="!movie")
+    reply = bot.get_reply()
+    print(reply)
 
 if __name__ == "__main__":
     main()

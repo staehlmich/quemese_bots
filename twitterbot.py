@@ -189,7 +189,7 @@ class TwitterBot:
             else:
                 self.log("-- Posting to own timeline")
 
-            tweet = cmd(*args, **kwargs)
+            tweet = cmd(*args, **kwargs)._json
             self.log(
                 'Status posted at {}'.format(self._tweet_url(tweet)))
             return True
