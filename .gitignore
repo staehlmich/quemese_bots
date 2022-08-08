@@ -1,6 +1,6 @@
 /config.py
 /data
 search_tweets.py
-episodios.csv
+#episodios.csv
 FilmQuotes12.log
 FilmQuotes12_state.pkl

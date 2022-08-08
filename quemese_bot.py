@@ -7,7 +7,7 @@ Program to implement a movie-bot for Twitter.
 """
 
 from twitterbot import TwitterBot
-import config
+import os
 import pandas as pd
 import re
 from utils import BotActions
@@ -45,10 +45,10 @@ class QuemeseBot(TwitterBot):
         ############################
         # REQUIRED: LOGIN DETAILS! #
         ############################
-        self.config['api_key'] = config.api_key
-        self.config['api_secret'] = config.api_secret
-        self.config['access_key'] = config.bot_token
-        self.config['access_secret'] = config.bot_token_secret
+        self.config['api_key'] = os.environ.get('api_key', None)
+        self.config['api_secret'] = os.environ.get('api_secret', None)
+        self.config['access_key'] = os.environ.get('access_key', None)
+        self.config['access_secret'] = os.environ.get('access_secret', None)
 
         ######################################
         # SEMI-OPTIONAL: OTHER CONFIG STUFF! #

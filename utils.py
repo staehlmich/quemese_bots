@@ -12,6 +12,7 @@ import typing
 from thefuzz import process
 import tmdbsimple as tmdb
 import config
+import os
 import random
 
 #3. Recommend a movie given a genre (on command).
@@ -97,14 +98,12 @@ class BotActions(object):
         :return:
         """
 
-        tmdb.API_KEY = config.tmdb_key
+        tmdb.API_KEY = os.environ.get('tmdb_key', None
         discover = tmdb.Discover()
         # 14544 is id for keyword 'robot'.
         rand_page = random.randrange(1, 21)
-        # print(rand_page)
         results = discover.movie(with_keywords=[14544], page=rand_page)
 
-        # print(results)
         result = random.choice(results["results"])
         url = "https://www.themoviedb.org/movie/"
         return f"{result['original_title']}: {url+str(result['id'])}"
