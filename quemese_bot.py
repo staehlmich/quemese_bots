@@ -11,6 +11,7 @@ import config
 import pandas as pd
 import re
 from utils import BotActions
+import os
 
 #1. Recommend a random episode from podcast (on command).
 
@@ -45,10 +46,10 @@ class QuemeseBot(TwitterBot):
         ############################
         # REQUIRED: LOGIN DETAILS! #
         ############################
-        self.config['api_key'] = config.api_key
-        self.config['api_secret'] = config.api_secret
-        self.config['access_key'] = config.bot_token
-        self.config['access_secret'] = config.bot_token_secret
+        self.config['api_key'] = os.getenv("api_key")
+        self.config['api_secret'] = os.getenv("api_secret")
+        self.config['access_key'] = os.getenv("bot_token")
+        self.config['access_secret'] = os.getenv("bot_token_secret")
 
         ######################################
         # SEMI-OPTIONAL: OTHER CONFIG STUFF! #
